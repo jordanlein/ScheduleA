@@ -25,6 +25,7 @@
             --accent-primary: #0d9488; /* Teal */
             --accent-secondary: #c026d3; /* Magenta */
             --border-color: #e5e7eb;
+            --sidebar-width: 280px;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -38,28 +39,13 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .nav-link {
-            position: relative;
-            transition: color 0.3s;
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 3px;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--accent-secondary);
-            transition: width 0.3s ease-in-out;
-            border-radius: 2px;
-        }
         .nav-link.active {
+            background-color: var(--bg-primary);
             color: var(--accent-primary);
             font-weight: 600;
         }
-        .nav-link.active::after {
-            width: 100%;
+        .nav-link.active svg {
+            color: var(--accent-primary);
         }
         .loader {
             border: 4px solid #e0e7ff;
@@ -84,46 +70,82 @@
             color: var(--accent-primary);
             box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
         }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (min-width: 1024px) {
+            .main-container {
+                padding-left: var(--sidebar-width);
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
 
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <header class="py-8 text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-fuchsia-600">The "Schedule A" Phenomenon</h1>
-            <p class="mt-4 text-lg text-text-secondary max-w-3xl mx-auto">An interactive analysis of mass IP litigation, its concentration in Chicago, and its impact on the digital economy.</p>
-        </header>
+    <div class="relative min-h-screen lg:flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="bg-white text-gray-800 w-[var(--sidebar-width)] fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 z-40 lg:z-auto sidebar lg:flex flex-col">
+            <div class="p-6 text-center border-b">
+                <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-fuchsia-600">Schedule A</h1>
+                <p class="text-sm text-text-secondary">An Analysis</p>
+            </div>
+            <nav id="main-nav" class="flex-1 p-4 space-y-2">
+                <a href="#home" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Home
+                </a>
+                <a href="#playbook" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                    The Playbook
+                </a>
+                <a href="#epicenter" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    The Epicenter
+                </a>
+                <a href="#controversy" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    The Controversy
+                </a>
+                <a href="#big-picture" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.737 11l-.262-2.812a1 1 0 01.99-1.138h7.07a1 1 0 01.99 1.138L16.263 11M12 16v4m-4-4v4m8-4v4"></path></svg>
+                    The Big Picture
+                </a>
+                <a href="#forward" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    The Path Forward
+                </a>
+                <a href="#resources" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 3h3m-3 3h3m-3 3h3"></path></svg>
+                    Resources & News
+                </a>
+            </nav>
+        </aside>
 
-        <nav class="sticky top-0 bg-f5f3ff/80 backdrop-blur-md z-10 border-b border-gray-200/80 mb-12">
-            <ul id="main-nav" class="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-8 py-4 text-sm sm:text-base font-medium text-text-secondary">
-                <li><a href="#home" class="nav-link px-2 py-2">Home</a></li>
-                <li><a href="#playbook" class="nav-link px-2 py-2">The Playbook</a></li>
-                <li><a href="#epicenter" class="nav-link px-2 py-2">The Epicenter</a></li>
-                <li><a href="#controversy" class="nav-link px-2 py-2">The Controversy</a></li>
-                <li><a href="#big-picture" class="nav-link px-2 py-2">The Big Picture</a></li>
-                <li><a href="#forward" class="nav-link px-2 py-2">The Path Forward</a></li>
-                <li><a href="#resources" class="nav-link px-2 py-2">Resources & News</a></li>
-            </ul>
-        </nav>
-
-        <main id="main-content-area">
-            <!-- Dynamic content will be injected here -->
-        </main>
-
-        <footer class="text-center py-12 mt-8 border-t border-gray-200/80">
-            <p class="text-sm text-text-secondary">This interactive application is based on the report "The 'Schedule A' Phenomenon: An In-Depth Analysis."</p>
-        </footer>
+        <!-- Main Content Area -->
+        <div class="main-container flex-1">
+            <!-- Mobile Header -->
+            <header class="lg:hidden sticky top-0 bg-f5f3ff/80 backdrop-blur-md z-30 flex items-center justify-between p-4 border-b">
+                <h1 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-fuchsia-600">Schedule A</h1>
+                <button id="hamburger-button" class="p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </header>
+            
+            <main id="main-content-area" class="p-6 lg:p-10">
+                <!-- Dynamic content will be injected here -->
+            </main>
+        </div>
     </div>
 
     <!-- Floating Action Button for Bot -->
-    <button id="open-bot-button" class="fixed bottom-8 right-8 bg-gradient-to-br from-teal-500 to-fuchsia-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-200 z-20">
+    <button id="open-bot-button" class="fixed bottom-8 right-8 bg-gradient-to-br from-teal-500 to-fuchsia-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-200 z-40">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.828 8.828 0 01-4.32-1.146L2.26 17.65A1 1 0 012 17v-3.333A6.975 6.975 0 011 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.667 12.667A5.002 5.002 0 009 15c2.757 0 5-1.79 5-4s-2.243-4-5-4-5 1.79-5 4a4.983 4.983 0 001.667 3.667z" clip-rule="evenodd" />
         </svg>
     </button>
 
     <!-- Bot Modal -->
-    <div id="bot-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-30 invisible opacity-0">
+    <div id="bot-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50 invisible opacity-0">
         <div id="bot-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 transform scale-95 relative">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-bold text-text-primary">✨ Ask a Legal Bot</h2>
@@ -149,13 +171,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             const mainContentArea = document.getElementById('main-content-area');
             const navContainer = document.getElementById('main-nav');
+            const sidebar = document.getElementById('sidebar');
+            const hamburgerButton = document.getElementById('hamburger-button');
             
             const pageTemplates = {
                 home: `
-                    <section id="home" class="main-content space-y-8 text-center">
-                        <div class="max-w-4xl mx-auto">
-                             <h2 class="text-3xl font-bold text-text-primary">Welcome</h2>
-                             <p class="mt-4 text-text-secondary">This interactive report explores the world of "Schedule A" lawsuits—a powerful and controversial legal strategy used to combat online counterfeiting. Discover the step-by-step process, understand the controversy, see the data, and explore the path forward. Choose a section below to begin.</p>
+                    <section id="home" class="main-content space-y-8">
+                        <div class="max-w-4xl mx-auto text-center">
+                             <h2 class="text-3xl lg:text-4xl font-bold text-text-primary">An Interactive Analysis of Mass IP Litigation</h2>
+                             <p class="mt-4 text-lg text-text-secondary">This interactive report explores the world of "Schedule A" lawsuits—a powerful and controversial legal strategy used to combat online counterfeiting. Discover the step-by-step process, understand the controversy, see the data, and explore the path forward. Choose a section below to begin.</p>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
                             <a href="#playbook" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -321,17 +345,26 @@
             }
 
             navContainer.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A') {
-                    e.preventDefault();
-                    const pageId = e.target.getAttribute('href').substring(1);
+                 e.preventDefault();
+                const link = e.target.closest('a');
+                if (link) {
+                    const pageId = link.getAttribute('href').substring(1);
                     renderPage(pageId);
                     window.history.pushState({pageId}, '', `#${pageId}`);
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth < 1024) {
+                        sidebar.classList.add('-translate-x-full');
+                    }
                 }
             });
             
             window.addEventListener('popstate', (e) => {
                 const pageId = e.state ? e.state.pageId : 'home';
                 renderPage(pageId);
+            });
+
+            hamburgerButton.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
             });
 
             function initPlaybook() {
