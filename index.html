@@ -123,7 +123,7 @@
                 background-color: white !important;
                 color: black !important;
             }
-            #sidebar, #open-bot-button, #bot-modal, .print-button, header {
+            #sidebar, #open-bot-button, #bot-modal, .print-button, header.lg\:hidden {
                 display: none !important;
             }
             .main-container {
@@ -274,10 +274,6 @@
             const pageTemplates = {
                 home: `
                     <section id="home" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="max-w-4xl mx-auto text-center">
                              <h2 class="text-3xl lg:text-4xl font-bold text-text-primary">An Interactive Analysis of Mass IP Litigation</h2>
                              <p class="mt-4 text-lg text-text-secondary">This interactive report explores the world of "Schedule A" lawsuits—a powerful and controversial legal strategy used to combat online counterfeiting. Discover the step-by-step process, understand the controversy, see the data, and explore the path forward. Choose a section below to begin.</p>
@@ -316,10 +312,6 @@
                 `,
                 playbook: `
                     <section id="playbook" class="main-content space-y-12">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Anatomy of a Schedule A Lawsuit</h2>
                             <p class="mt-4 text-text-secondary">Schedule A cases are a unique legal strategy used by brands to sue hundreds of online sellers at once. This interactive timeline breaks down the highly effective, step-by-step process they use.</p>
@@ -334,10 +326,6 @@
                 `,
                 epicenter: `
                     <section id="epicenter" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Ground Zero: The Northern District of Illinois</h2><p class="mt-4 text-text-secondary">One federal court in Chicago has become the undisputed hub for Schedule A litigation. A combination of judicial receptiveness and streamlined procedures has created a favorable "market" for this type of lawsuit. The chart below visualizes this staggering concentration.</p></div>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                              <div class="bg-surface-container p-4 sm:p-6 rounded-2xl shadow-lg">
@@ -349,10 +337,6 @@
                 `,
                 controversy: `
                     <section id="controversy" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">A Collision with Due Process</h2><p class="mt-4 text-text-secondary">The power and efficiency of the Schedule A model come at a cost, creating a direct conflict with core principles of the American legal system. This section explores the key points of contention.</p></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">⚖️ Due Process & Notice</h3><p class="text-text-secondary">The bedrock of constitutional due process is the right to receive notice and have a meaningful opportunity to be heard. Schedule A cases systematically subvert this by using *ex parte* Temporary Restraining Orders (TROs) to freeze assets and shut down businesses before defendants are even aware a lawsuit exists. This preemptive penalty, executed without the defendant's participation, is seen by critics as a "sneak up" attack that departs from expected standards of fairness.</p></div>
@@ -364,10 +348,6 @@
                 `,
                 'big-picture': `
                     <section id="big-picture" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Systemic Signals & Economic Stakes</h2><p class="mt-4 text-text-secondary">Schedule A lawsuits are a symptom of larger forces: a legal system struggling with a borderless internet and the staggering economic scale of global counterfeiting.</p></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">💰 The Counterfeiting Economy</h3><p class="text-text-secondary mb-4">The aggressive tactics are a direct reaction to a massive underground industry that drains hundreds of billions from the legitimate economy. Beyond lost revenue, brands suffer from reputational erosion and must expend enormous resources on enforcement, diverting capital from innovation. The anonymity and global reach of e-commerce platforms have acted as a powerful accelerant for this problem.</p><div class="space-y-2 text-text-primary"><p><span class="font-bold text-2xl text-fuchsia-600" data-count="467">0</span><span class="font-bold text-2xl text-fuchsia-600"> Billion:</span> Value of international counterfeit trade.</p><p><span class="font-bold text-2xl text-fuchsia-600" data-count="5.4">0</span><span class="font-bold text-2xl text-fuchsia-600"> Million:</span> Jobs lost globally.</p><p><span class="font-bold text-2xl text-fuchsia-600" data-count="4.2">0</span><span class="font-bold text-2xl text-fuchsia-600"> Trillion:</span> Projected total value by 2025.</p></div></div>
@@ -378,10 +358,6 @@
                 `,
                 forward: `
                     <section id="forward" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">The Path Forward</h2><p class="mt-4 text-text-secondary">The Schedule A model is at a crossroads. The future will likely involve a mix of judicial, legislative, and technological solutions.</p></div>
                         <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
                             <div class="flex justify-center mb-6 p-1 bg-gray-200/70 rounded-full"><div id="tab-container" class="flex gap-2">
@@ -406,10 +382,6 @@
                 `,
                 toolkit: `
                     <section id="toolkit" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Defendant's Toolkit</h2>
                             <p class="mt-4 text-text-secondary">Finding yourself named in a Schedule A lawsuit can be overwhelming. This checklist provides a simplified guide for your first steps. <strong class="text-red-600">This is for informational purposes only and is not legal advice.</strong></p>
@@ -440,10 +412,6 @@
                 `,
                 resources: `
                     <section id="resources" class="main-content space-y-12">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Resources & News</h2><p class="mt-4 text-text-secondary">Explore reliable sources for deeper analysis and stay updated with the latest news on Schedule A litigation.</p></div>
                         
                         <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
@@ -468,10 +436,6 @@
                 `,
                 caselaw: `
                     <section id="caselaw" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Case Law Database</h2>
                             <p class="mt-4 text-text-secondary">An interactive database of notable Schedule A cases. Search, sort, and explore key rulings and documents.</p>
@@ -501,10 +465,6 @@
                 `,
                 casestudies: `
                     <section id="casestudies" class="main-content space-y-12">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Case Studies in Schedule A Litigation</h2>
                             <p class="mt-4 text-text-secondary">These narrative case studies explore how Schedule A lawsuits unfold in the real world, illustrating the profound impact on both plaintiffs and defendants.</p>
@@ -580,10 +540,6 @@
                 `,
                 'plaintiffs-perspective': `
                     <section id="plaintiffs-perspective" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">The Plaintiff's Perspective</h2>
                             <p class="mt-4 text-text-secondary">To understand the Schedule A phenomenon, it's crucial to view it from the perspective of the brand owners (plaintiffs) who use it. For them, this legal tool is not about targeting small sellers but about surviving a tidal wave of anonymous, industrial-scale counterfeiting that threatens their brands, their customers, and their very existence. This section explores their rationale.</p>
@@ -610,10 +566,6 @@
                 `,
                 faq: `
                     <section id="faq" class="main-content space-y-8">
-                        <button onclick="window.print()" class="print-button bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full inline-flex items-center">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm7-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                            Print This Section
-                        </button>
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Frequently Asked Questions</h2>
                             <p class="mt-4 text-text-secondary">Here are answers to some common questions about Schedule A lawsuits. Click on a question to view the answer.</p>
@@ -659,7 +611,7 @@
                     case 'resources': initResourcesAndNews(); break;
                     case 'caselaw': initCaseLawDatabase(); break;
                     case 'casestudies': break; // No special init needed for this simple template
-                case 'faq': initFaqAccordion(); break;
+                    case 'faq': initFaqAccordion(); break;
                 }
                 updateActiveNav(pageId);
                 highlightLegalTerms();
@@ -1286,4 +1238,4 @@ User Question: "${question}"`;
         });
     </script>
 </body>
-</html>
+</ht
