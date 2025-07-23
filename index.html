@@ -73,6 +73,14 @@
         .sidebar {
             transition: transform 0.3s ease-in-out;
         }
+        .timeline-item.active .timeline-dot {
+            background-color: var(--accent-secondary);
+            transform: scale(1.25);
+        }
+        .timeline-item.active .timeline-content {
+            border-color: var(--accent-secondary);
+        }
+
         @media (min-width: 1024px) {
             .main-container {
                 padding-left: var(--sidebar-width);
@@ -84,7 +92,7 @@
 
     <div class="relative min-h-screen lg:flex">
         <!-- Sidebar -->
-        <aside id="sidebar" class="bg-white text-gray-800 w-[var(--sidebar-width)] fixed inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 z-40 lg:z-auto sidebar lg:flex flex-col">
+        <aside id="sidebar" class="bg-white text-gray-800 w-[var(--sidebar-width)] fixed inset-y-0 right-0 transform translate-x-full lg:left-0 lg:translate-x-0 z-40 lg:z-auto sidebar lg:flex flex-col">
             <div class="p-6 text-center border-b">
                 <h1 class="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-fuchsia-600">Schedule A</h1>
                 <p class="text-sm text-text-secondary">An Analysis</p>
@@ -119,7 +127,7 @@
                     Defendant's Toolkit
                 </a>
                 <a href="#resources" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 3h3m-3 3h3m-3 3h3"></path></svg>
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 3h3m-3 3h3"></path></svg>
                     Resources & News
                 </a>
             </nav>
@@ -218,27 +226,28 @@
                     </section>
                 `,
                 playbook: `
-                    <section id="playbook" class="main-content space-y-8">
+                    <section id="playbook" class="main-content space-y-12">
                         <div class="text-center max-w-3xl mx-auto">
                             <h2 class="text-3xl font-bold text-text-primary">Anatomy of a Schedule A Lawsuit</h2>
-                            <p class="mt-4 text-text-secondary">Schedule A cases are a unique legal strategy used by brands to sue hundreds of online sellers at once. This section breaks down the highly effective, step-by-step process they use. Click each step to learn more.</p>
+                            <p class="mt-4 text-text-secondary">Schedule A cases are a unique legal strategy used by brands to sue hundreds of online sellers at once. This interactive timeline breaks down the highly effective, step-by-step process they use.</p>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-start">
-                            <div class="md:col-span-2 space-y-3">
-                                <div id="step-1" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">1. The Sealed Complaint</h3><p class="text-sm text-text-secondary">The lawsuit is filed in secret.</p></div>
-                                <div id="step-2" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">2. The *Ex Parte* TRO</h3><p class="text-sm text-text-secondary">A judge is asked for an order with only one side present.</p></div>
-                                <div id="step-3" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">3. Asset Freeze & Takedown</h3><p class="text-sm text-text-secondary">The court order is served on payment platforms.</p></div>
-                                <div id="step-4" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">4. The "Notice"</h3><p class="text-sm text-text-secondary">Sellers discover their business is paralyzed.</p></div>
-                                <div id="step-5" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">5. The Resolution</h3><p class="text-sm text-text-secondary">Sellers face immense pressure to settle or default.</p></div>
-                            </div>
-                            <div id="step-details" class="md:col-span-3 p-6 bg-surface-container rounded-2xl shadow-lg min-h-[300px]"></div>
+                        <div class="relative wrap overflow-hidden p-10 h-full">
+                            <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border" style="left: 50%"></div>
+                            <!-- Timeline items -->
+                            <div id="timeline-container" class="space-y-8"></div>
                         </div>
+                        <div id="step-details" class="max-w-3xl mx-auto p-6 bg-surface-container rounded-2xl shadow-lg min-h-[150px]"></div>
                     </section>
                 `,
                 epicenter: `
                     <section id="epicenter" class="main-content space-y-8">
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Ground Zero: The Northern District of Illinois</h2><p class="mt-4 text-text-secondary">One federal court in Chicago has become the undisputed hub for Schedule A litigation. A combination of judicial receptiveness and streamlined procedures has created a favorable "market" for this type of lawsuit. The chart below visualizes this staggering concentration.</p></div>
-                        <div class="bg-surface-container p-4 sm:p-6 rounded-2xl shadow-lg"><div class="chart-container" style="height: 400px; max-height: 50vh; max-width: 700px; margin: auto;"><canvas id="ndilChart"></canvas></div></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                             <div class="bg-surface-container p-4 sm:p-6 rounded-2xl shadow-lg">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.483489475763!2d-87.63555568455895!3d41.88219597922219!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880e2cb8f4ba65cf%3A0x89295569990bb943!2sEverett%20McKinley%20Dirksen%20United%20States%20Courthouse!5e0!3m2!1sen!2sus!4v1690129876543!5m2!1sen!2sus" width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="rounded-lg"></iframe>
+                            </div>
+                            <div class="bg-surface-container p-4 sm:p-6 rounded-2xl shadow-lg"><div class="chart-container" style="height: 350px; max-height: 40vh; max-width: 700px; margin: auto;"><canvas id="ndilChart"></canvas></div></div>
+                        </div>
                     </section>
                 `,
                 controversy: `
@@ -256,7 +265,7 @@
                     <section id="big-picture" class="main-content space-y-8">
                         <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Systemic Signals & Economic Stakes</h2><p class="mt-4 text-text-secondary">Schedule A lawsuits are a symptom of larger forces: a legal system struggling with a borderless internet and the staggering economic scale of global counterfeiting.</p></div>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">💰 The Counterfeiting Economy</h3><p class="text-text-secondary mb-4">The aggressive tactics are a direct reaction to a massive underground industry that drains hundreds of billions from the legitimate economy. Beyond lost revenue, brands suffer from reputational erosion and must expend enormous resources on enforcement, diverting capital from innovation. The anonymity and global reach of e-commerce platforms have acted as a powerful accelerant for this problem.</p><div class="space-y-2 text-text-primary"><p><span class="font-bold">~$467 Billion:</span> Value of international counterfeit trade.</p><p><span class="font-bold">~5.4 Million:</span> Jobs lost globally.</p><p><span class="font-bold">~$4.2 Trillion:</span> Projected total value by 2025.</p></div></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">💰 The Counterfeiting Economy</h3><p class="text-text-secondary mb-4">The aggressive tactics are a direct reaction to a massive underground industry that drains hundreds of billions from the legitimate economy. Beyond lost revenue, brands suffer from reputational erosion and must expend enormous resources on enforcement, diverting capital from innovation. The anonymity and global reach of e-commerce platforms have acted as a powerful accelerant for this problem.</p><div class="space-y-2 text-text-primary"><p><span class="font-bold text-2xl text-fuchsia-600" data-count="467">0</span><span class="font-bold text-2xl text-fuchsia-600"> Billion:</span> Value of international counterfeit trade.</p><p><span class="font-bold text-2xl text-fuchsia-600" data-count="5.4">0</span><span class="font-bold text-2xl text-fuchsia-600"> Million:</span> Jobs lost globally.</p><p><span class="font-bold text-2xl text-fuchsia-600" data-count="4.2">0</span><span class="font-bold text-2xl text-fuchsia-600"> Trillion:</span> Projected total value by 2025.</p></div></div>
                             <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">🌐 A Stressed Legal System</h3><p class="text-text-secondary">The traditional one-plaintiff-versus-one-defendant model is ill-equipped for the high-volume, anonymous nature of online infringement. This creates a dilemma: rigidly following rules designed for a pre-internet era makes enforcement nearly impossible, but bending those rules creates a due process crisis. Schedule A litigation exists in this gray area, highlighting a global struggle to apply national laws to a borderless digital world.</p></div>
                             <div class="bg-surface-container p-6 rounded-2xl shadow-lg lg:col-span-1 md:col-span-2"><h3 class="text-xl font-bold text-text-primary mb-3">🛒 The Role of Platforms</h3><p class="text-text-secondary">The battleground for IP enforcement has shifted to online marketplaces like Amazon and Etsy. A powerful movement seeks to shift the enforcement burden onto these multi-billion-dollar corporations, arguing they profit from the environment that allows counterfeiting to thrive. Proposed laws like the SHOP SAFE Act would move platforms from the role of passive hosts to active, accountable gatekeepers responsible for verifying sellers and screening for fakes.</p></div>
                         </div>
@@ -371,6 +380,7 @@
                         break;
                     case 'playbook': initPlaybook(); break;
                     case 'epicenter': initEpicenterChart(); break;
+                    case 'big-picture': initBigPictureCounters(); break;
                     case 'forward': initForward(); break;
                     case 'resources': initResourcesAndNews(); break;
                 }
@@ -392,7 +402,8 @@
                     window.history.pushState({pageId}, '', `#${pageId}`);
                     // Close sidebar on mobile after navigation
                     if (window.innerWidth < 1024) {
-                        sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.add('translate-x-full');
+                        sidebar.classList.remove('translate-x-0');
                     }
                 }
             });
@@ -404,23 +415,47 @@
 
             hamburgerButton.addEventListener('click', () => {
                 sidebar.classList.toggle('-translate-x-full');
+                 sidebar.classList.toggle('translate-x-0');
             });
 
             function initPlaybook() {
-                const stepItems = document.querySelectorAll('.step-item');
+                const timelineContainer = document.getElementById('timeline-container');
                 const stepDetailsContainer = document.getElementById('step-details');
                 
+                Object.keys(stepDetailsContent).forEach((key, index) => {
+                    const step = stepDetailsContent[key];
+                    const alignment = index % 2 === 0 ? 'flex-row-reverse' : '';
+                    const timelineItem = `
+                        <div class="mb-8 flex justify-between items-center w-full ${alignment}">
+                            <div class="order-1 w-5/12"></div>
+                            <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
+                                <h1 class="mx-auto font-semibold text-lg text-white">${index + 1}</h1>
+                            </div>
+                            <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 timeline-item cursor-pointer" data-step="${key}">
+                                <h3 class="font-bold text-gray-800 text-lg">${step.title.split(': ')[1]}</h3>
+                            </div>
+                        </div>
+                    `;
+                    timelineContainer.innerHTML += timelineItem;
+                });
+
                 function updateStepDetails(stepId) {
                     const content = stepDetailsContent[stepId];
                     if (content) {
                         stepDetailsContainer.innerHTML = `<h3 class="text-2xl font-bold text-text-primary mb-4">${content.title}</h3><p class="text-text-secondary leading-relaxed">${content.text}</p>`;
                     }
-                    stepItems.forEach(item => {
-                        item.classList.toggle('active', item.id === stepId);
-                        item.style.borderColor = item.id === stepId ? 'var(--accent-secondary)' : 'transparent';
+                    document.querySelectorAll('.timeline-item').forEach(item => {
+                        item.classList.toggle('active', item.dataset.step === stepId);
                     });
                 }
-                stepItems.forEach(item => item.addEventListener('click', () => updateStepDetails(item.id)));
+
+                timelineContainer.addEventListener('click', (e) => {
+                    const targetItem = e.target.closest('.timeline-item');
+                    if (targetItem) {
+                        updateStepDetails(targetItem.dataset.step);
+                    }
+                });
+
                 updateStepDetails('step-1');
             }
 
@@ -430,6 +465,37 @@
                     type: 'bar',
                     data: { labels: ['2020', '2021', '2022'], datasets: [{ label: 'Cases Filed in NDIL', data: [496, 664, 823], backgroundColor: 'rgba(13, 148, 136, 0.6)', borderColor: 'rgba(13, 148, 136, 1)', borderWidth: 2, borderRadius: 8 }, { label: 'Cases Filed Elsewhere', data: [37, 69, 112], backgroundColor: 'rgba(192, 38, 211, 0.6)', borderColor: 'rgba(192, 38, 211, 1)', borderWidth: 2, borderRadius: 8 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Schedule A Case Filings: NDIL vs. Rest of U.S.', font: { size: 18 }, color: '#333' }, tooltip: { callbacks: { footer: (items) => { const total = items.reduce((s, i) => s + i.raw, 0); const ndil = items.find(i => i.dataset.label.includes('NDIL'))?.raw || 0; return total > 0 ? `NDIL handled ${((ndil / total) * 100).toFixed(1)}% of cases.` : ''; } } } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Number of Cases Filed' } } } }
+                });
+            }
+
+            function initBigPictureCounters() {
+                const counters = document.querySelectorAll('[data-count]');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const counter = entry.target;
+                            const target = +counter.dataset.count;
+                            const duration = 1500;
+                            const stepTime = 20;
+                            let start = 0;
+                            const step = (target * stepTime) / duration;
+                            
+                            const timer = setInterval(() => {
+                                start += step;
+                                if (start >= target) {
+                                    clearInterval(timer);
+                                    counter.innerText = target.toLocaleString();
+                                } else {
+                                    counter.innerText = Math.ceil(start).toLocaleString();
+                                }
+                            }, stepTime);
+                            observer.unobserve(counter);
+                        }
+                    });
+                }, { threshold: 0.7 });
+
+                counters.forEach(counter => {
+                    observer.observe(counter);
                 });
             }
             
