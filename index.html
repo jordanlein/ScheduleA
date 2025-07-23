@@ -96,6 +96,7 @@
 
         <nav class="sticky top-0 bg-f5f3ff/80 backdrop-blur-md z-10 border-b border-gray-200/80 mb-12">
             <ul id="main-nav" class="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-8 py-4 text-sm sm:text-base font-medium text-text-secondary">
+                <li><a href="#home" class="nav-link px-2 py-2">Home</a></li>
                 <li><a href="#playbook" class="nav-link px-2 py-2">The Playbook</a></li>
                 <li><a href="#epicenter" class="nav-link px-2 py-2">The Epicenter</a></li>
                 <li><a href="#controversy" class="nav-link px-2 py-2">The Controversy</a></li>
@@ -150,6 +151,40 @@
             const navContainer = document.getElementById('main-nav');
             
             const pageTemplates = {
+                home: `
+                    <section id="home" class="main-content space-y-8 text-center">
+                        <div class="max-w-4xl mx-auto">
+                             <h2 class="text-3xl font-bold text-text-primary">Welcome</h2>
+                             <p class="mt-4 text-text-secondary">This interactive report explores the world of "Schedule A" lawsuits—a powerful and controversial legal strategy used to combat online counterfeiting. Discover the step-by-step process, understand the controversy, see the data, and explore the path forward. Choose a section below to begin.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                            <a href="#playbook" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">The Playbook</h3>
+                                <p class="text-text-secondary">Learn the step-by-step anatomy of a Schedule A lawsuit, from the secret filing to the asset freeze.</p>
+                            </a>
+                            <a href="#epicenter" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">The Epicenter</h3>
+                                <p class="text-text-secondary">Why has Chicago's federal court become the undisputed ground zero for this type of litigation?</p>
+                            </a>
+                            <a href="#controversy" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">The Controversy</h3>
+                                <p class="text-text-secondary">Explore the deep conflicts with due process, procedural rules, and fairness.</p>
+                            </a>
+                            <a href="#big-picture" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">The Big Picture</h3>
+                                <p class="text-text-secondary">Understand the massive economic stakes and the signals these cases send about our legal system.</p>
+                            </a>
+                            <a href="#forward" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">The Path Forward</h3>
+                                <p class="text-text-secondary">Discover the judicial, legislative, and technological solutions that could reform online IP enforcement.</p>
+                            </a>
+                            <a href="#resources" class="nav-card block bg-surface-container p-6 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                                <h3 class="text-xl font-bold text-text-primary mb-2">Resources & News</h3>
+                                <p class="text-text-secondary">Find links for further reading and a live feed of the latest news on Schedule A cases.</p>
+                            </a>
+                        </div>
+                    </section>
+                `,
                 playbook: `
                     <section id="playbook" class="main-content space-y-8">
                         <div class="text-center max-w-3xl mx-auto">
@@ -260,6 +295,17 @@
             function renderPage(pageId) {
                 mainContentArea.innerHTML = pageTemplates[pageId] || `<p>Page not found.</p>`;
                 switch(pageId) {
+                    case 'home':
+                        // Add event listeners to the new nav cards on the home page
+                        mainContentArea.querySelectorAll('.nav-card').forEach(card => {
+                            card.addEventListener('click', (e) => {
+                                e.preventDefault();
+                                const targetId = card.getAttribute('href').substring(1);
+                                renderPage(targetId);
+                                window.history.pushState({pageId: targetId}, '', `#${targetId}`);
+                            });
+                        });
+                        break;
                     case 'playbook': initPlaybook(); break;
                     case 'epicenter': initEpicenterChart(); break;
                     case 'forward': initForward(); break;
@@ -284,7 +330,7 @@
             });
             
             window.addEventListener('popstate', (e) => {
-                const pageId = e.state ? e.state.pageId : 'playbook';
+                const pageId = e.state ? e.state.pageId : 'home';
                 renderPage(pageId);
             });
 
@@ -537,7 +583,7 @@ User Question: "${question}"`;
 
 
             // --- INITIAL LOAD ---
-            const initialPage = window.location.hash.substring(1) || 'playbook';
+            const initialPage = window.location.hash.substring(1) || 'home';
             renderPage(initialPage);
             initGeminiQA(); // Initialize bot logic once on page load
         });
