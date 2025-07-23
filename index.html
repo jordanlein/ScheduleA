@@ -130,6 +130,10 @@
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3h3m-3 3h3m-3 3h3"></path></svg>
                     Resources & News
                 </a>
+                <a href="#caselaw" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Case Law Database
+                </a>
             </nav>
         </aside>
 
@@ -348,6 +352,35 @@
                              </div>
                         </div>
                     </section>
+                `,
+                caselaw: `
+                    <section id="caselaw" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto">
+                            <h2 class="text-3xl font-bold text-text-primary">Case Law Database</h2>
+                            <p class="mt-4 text-text-secondary">An interactive database of notable Schedule A cases. Search, sort, and explore key rulings and documents.</p>
+                        </div>
+                        <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
+                            <div class="mb-4">
+                                <input type="text" id="case-search" class="block w-full rounded-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-4 py-2" placeholder="Search by case name, judge, or summary...">
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Case Name</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer" data-sort="judge">Presiding Judge</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider cursor-pointer" data-sort="date">Date Filed</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Summary of Ruling</th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-text-secondary uppercase tracking-wider">Link to Docket</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="case-table-body" class="bg-white divide-y divide-gray-200">
+                                        <!-- Case data will be injected here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
                 `
             };
             
@@ -383,6 +416,7 @@
                     case 'big-picture': initBigPictureCounters(); break;
                     case 'forward': initForward(); break;
                     case 'resources': initResourcesAndNews(); break;
+                    case 'caselaw': initCaseLawDatabase(); break;
                 }
                 updateActiveNav(pageId);
             }
@@ -417,6 +451,104 @@
                 sidebar.classList.toggle('-translate-x-full');
                  sidebar.classList.toggle('translate-x-0');
             });
+
+            function initCaseLawDatabase() {
+                const caseData = [
+                    {
+                        name: 'The General Automobile Insurance Company, Inc. v. Schedule A...',
+                        judge: 'John F. Kness',
+                        date: '2023-05-18',
+                        summary: 'Order to stay all proceedings and reassess the validity of using Schedule A in such cases.',
+                        docket: 'https://www.pacer.gov/'
+                    },
+                    {
+                        name: 'Louis Vuitton Malletier v. Schedule A...',
+                        judge: 'LaShonda A. Hunt',
+                        date: '2022-11-09',
+                        summary: 'Granted ex parte TRO, freezing assets of hundreds of online sellers.',
+                        docket: 'https://www.pacer.gov/'
+                    },
+                    {
+                        name: 'Nike, Inc. v. Schedule A...',
+                        judge: 'Mary M. Rowland',
+                        date: '2023-01-22',
+                        summary: 'Denied motion for TRO due to improper joinder of unrelated defendants.',
+                        docket: 'https://www.pacer.gov/'
+                    },
+                    {
+                        name: 'Gucci America, Inc. v. Schedule A...',
+                        judge: 'Edmond E. Chang',
+                        date: '2021-08-30',
+                        summary: 'Issued a default judgment against defendants who failed to appear.',
+                        docket: 'https://www.pacer.gov/'
+                    },
+                    {
+                        name: 'Apple Inc. v. Schedule A...',
+                        judge: 'Thomas M. Durkin',
+                        date: '2023-03-15',
+                        summary: 'Dismissed case for lack of personal jurisdiction over foreign defendants.',
+                        docket: 'https://www.pacer.gov/'
+                    }
+                ];
+
+                const tableBody = document.getElementById('case-table-body');
+                const searchInput = document.getElementById('case-search');
+                const headers = document.querySelectorAll('[data-sort]');
+                let currentSort = { key: 'date', direction: 'desc' };
+
+                function renderTable(data) {
+                    tableBody.innerHTML = '';
+                    data.forEach(item => {
+                        const row = `
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-primary">${item.name}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">${item.judge}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-text-secondary">${new Date(item.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</td>
+                                <td class="px-6 py-4 text-sm text-text-secondary">${item.summary}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-teal-600 hover:underline"><a href="${item.docket}" target="_blank" rel="noopener noreferrer">View Docket</a></td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                }
+
+                function sortData(data, key, direction) {
+                    return [...data].sort((a, b) => {
+                        if (a[key] < b[key]) return direction === 'asc' ? -1 : 1;
+                        if (a[key] > b[key]) return direction === 'asc' ? 1 : -1;
+                        return 0;
+                    });
+                }
+
+                function filterData(data, query) {
+                    const lowerCaseQuery = query.toLowerCase();
+                    return data.filter(item => {
+                        return Object.values(item).some(value =>
+                            String(value).toLowerCase().includes(lowerCaseQuery)
+                        );
+                    });
+                }
+
+                function updateTable() {
+                    const query = searchInput.value;
+                    const filtered = filterData(caseData, query);
+                    const sorted = sortData(filtered, currentSort.key, currentSort.direction);
+                    renderTable(sorted);
+                }
+
+                searchInput.addEventListener('input', updateTable);
+
+                headers.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const key = header.dataset.sort;
+                        const direction = currentSort.key === key && currentSort.direction === 'asc' ? 'desc' : 'asc';
+                        currentSort = { key, direction };
+                        updateTable();
+                    });
+                });
+
+                updateTable();
+            }
 
             function initPlaybook() {
                 const timelineContainer = document.getElementById('timeline-container');
