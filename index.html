@@ -167,6 +167,10 @@
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                     The Plaintiff's Perspective
                 </a>
+                <a href="#faq" class="nav-link flex items-center px-4 py-2.5 text-text-secondary rounded-lg hover:bg-gray-100">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    FAQ
+                </a>
             </nav>
         </aside>
 
@@ -524,6 +528,17 @@
                             </div>
                         </div>
                     </section>
+                `,
+                faq: `
+                    <section id="faq" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto">
+                            <h2 class="text-3xl font-bold text-text-primary">Frequently Asked Questions</h2>
+                            <p class="mt-4 text-text-secondary">Here are answers to some common questions about Schedule A lawsuits. Click on a question to view the answer.</p>
+                        </div>
+                        <div id="faq-accordion" class="max-w-4xl mx-auto space-y-4">
+                            <!-- FAQ items will be injected here -->
+                        </div>
+                    </section>
                 `
             };
             
@@ -561,9 +576,79 @@
                     case 'resources': initResourcesAndNews(); break;
                     case 'caselaw': initCaseLawDatabase(); break;
                     case 'casestudies': break; // No special init needed for this simple template
+                case 'faq': initFaqAccordion(); break;
                 }
                 updateActiveNav(pageId);
                 highlightLegalTerms();
+            }
+
+            function initFaqAccordion() {
+                const faqData = [
+                    {
+                        question: "Can I be sued even if I don't live in the United States?",
+                        answer: "Yes. Plaintiffs argue that by selling products on platforms that are accessible in the U.S., you are subject to the jurisdiction of U.S. courts. This is a complex legal issue, but courts have often sided with plaintiffs, allowing them to sue foreign defendants."
+                    },
+                    {
+                        question: "What happens to the money that gets frozen?",
+                        answer: "The frozen funds are held by the payment processor (like PayPal or Amazon Pay) until the case is resolved. If you settle, a portion of the funds will be released to the plaintiff. If you default, the plaintiff may be awarded the entire amount. If you fight the case and win, the funds should be returned to you."
+                    },
+                    {
+                        question: "Why was I sued with hundreds of other people?",
+                        answer: "This is a key feature of Schedule A lawsuits. Plaintiffs use a legal procedure called 'joinder' to sue many defendants in a single case. They argue that all defendants are part of a larger counterfeiting network. This makes the process more efficient and less expensive for them."
+                    },
+                    {
+                        question: "Is this legal? It doesn't seem fair.",
+                        answer: "The legality and fairness of Schedule A lawsuits are at the heart of the controversy. While the process is currently allowed by some courts, many legal experts and judges have raised concerns about due process, notice, and fairness. The law in this area is still evolving."
+                    },
+                    {
+                        question: "What should I do if I'm a defendant in a Schedule A lawsuit?",
+                        answer: "The most important first step is to seek legal counsel from a lawyer experienced in Schedule A trademark cases. Do not ignore the lawsuit. An experienced lawyer can help you understand your options, which may include fighting the case, negotiating a settlement, or other legal strategies."
+                    }
+                ];
+
+                const accordionContainer = document.getElementById('faq-accordion');
+                accordionContainer.innerHTML = '';
+
+                faqData.forEach((item, index) => {
+                    const faqItem = `
+                        <div class="bg-surface-container rounded-2xl shadow-lg">
+                            <button class="w-full flex justify-between items-center text-left p-6">
+                                <h3 class="text-lg font-bold text-text-primary">${item.question}</h3>
+                                <svg class="w-6 h-6 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+                                <div class="p-6 pt-0 text-text-secondary">
+                                    <p>${item.answer}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    accordionContainer.innerHTML += faqItem;
+                });
+
+                accordionContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+
+                    const content = button.nextElementSibling;
+                    const svg = button.querySelector('svg');
+
+                    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        svg.style.transform = 'rotate(0deg)';
+                    } else {
+                        // Close all other items
+                        const allContent = accordionContainer.querySelectorAll('.overflow-hidden');
+                        allContent.forEach(item => {
+                            item.style.maxHeight = '0px';
+                            item.previousElementSibling.querySelector('svg').style.transform = 'rotate(0deg)';
+                        });
+
+                        // Open the clicked item
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        svg.style.transform = 'rotate(180deg)';
+                    }
+                });
             }
 
             function updateActiveNav(pageId) {
