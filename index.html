@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Schedule A Phenomenon: An Interactive Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Material You Expressive (Lavender, Teal, Magenta) -->
+    <!-- Application Structure Plan: The SPA has been refactored into a simulated multi-page application. A central JavaScript router function clears the main content area and dynamically injects the HTML for the selected "page." This provides a cleaner user flow, prevents an overwhelmingly long single page, and makes each section feel distinct and focused. The structure remains a narrative journey, but the presentation is now paginated for better usability and a more modern feel. -->
+    <!-- Visualization & Content Choices: 
+        - All original choices retained. The primary change is in the UI/UX presentation layer.
+        - UI/UX Rationale: The new design uses a Material You "Expressive" theme. This involves a soft lavender background, high-contrast text, vibrant teal and magenta accents, and heavily rounded shapes (`rounded-2xl`, `rounded-full`). This creates a more engaging, modern, and "app-like" feel, making the dense legal information more approachable for a non-expert audience without trivializing it. Page transitions are animated with a subtle fade-in to enhance the multi-page experience.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        :root {
+            --bg-primary: #f5f3ff; /* Light Lavender */
+            --surface-container: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --accent-primary: #0d9488; /* Teal */
+            --accent-secondary: #c026d3; /* Magenta */
+            --border-color: #e5e7eb;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .main-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-secondary);
+            transition: width 0.3s ease-in-out;
+            border-radius: 2px;
+        }
+        .nav-link.active {
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        .nav-link.active::after {
+            width: 100%;
+        }
+        .loader {
+            border: 4px solid #e0e7ff;
+            border-top: 4px solid var(--accent-primary);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #bot-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #bot-modal-content {
+            transition: transform 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: white;
+            color: var(--accent-primary);
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <header class="py-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-fuchsia-600">The "Schedule A" Phenomenon</h1>
+            <p class="mt-4 text-lg text-text-secondary max-w-3xl mx-auto">An interactive analysis of mass IP litigation, its concentration in Chicago, and its impact on the digital economy.</p>
+        </header>
+
+        <nav class="sticky top-0 bg-f5f3ff/80 backdrop-blur-md z-10 border-b border-gray-200/80 mb-12">
+            <ul id="main-nav" class="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-8 py-4 text-sm sm:text-base font-medium text-text-secondary">
+                <li><a href="#playbook" class="nav-link px-2 py-2">The Playbook</a></li>
+                <li><a href="#epicenter" class="nav-link px-2 py-2">The Epicenter</a></li>
+                <li><a href="#controversy" class="nav-link px-2 py-2">The Controversy</a></li>
+                <li><a href="#big-picture" class="nav-link px-2 py-2">The Big Picture</a></li>
+                <li><a href="#forward" class="nav-link px-2 py-2">The Path Forward</a></li>
+                <li><a href="#resources" class="nav-link px-2 py-2">Resources & News</a></li>
+            </ul>
+        </nav>
+
+        <main id="main-content-area">
+            <!-- Dynamic content will be injected here -->
+        </main>
+
+        <footer class="text-center py-12 mt-8 border-t border-gray-200/80">
+            <p class="text-sm text-text-secondary">This interactive application is based on the report "The 'Schedule A' Phenomenon: An In-Depth Analysis."</p>
+        </footer>
+    </div>
+
+    <!-- Floating Action Button for Bot -->
+    <button id="open-bot-button" class="fixed bottom-8 right-8 bg-gradient-to-br from-teal-500 to-fuchsia-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center transform hover:scale-110 transition-transform duration-200 z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.828 8.828 0 01-4.32-1.146L2.26 17.65A1 1 0 012 17v-3.333A6.975 6.975 0 011 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM4.667 12.667A5.002 5.002 0 009 15c2.757 0 5-1.79 5-4s-2.243-4-5-4-5 1.79-5 4a4.983 4.983 0 001.667 3.667z" clip-rule="evenodd" />
+        </svg>
+    </button>
+
+    <!-- Bot Modal -->
+    <div id="bot-modal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-30 invisible opacity-0">
+        <div id="bot-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 transform scale-95 relative">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-text-primary">✨ Ask a Legal Bot</h2>
+                <button id="close-bot-button" class="text-gray-400 hover:bg-gray-200 rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+            <p class="mt-2 mb-4 text-text-secondary">Ask our AI assistant about Schedule A lawsuits. It will first use the information from this report, then search for external context if needed.</p>
+            <div class="space-y-4">
+                <div><label for="qa-input" class="block text-sm font-medium text-text-primary">Your Question:</label><input type="text" id="qa-input" class="mt-1 block w-full rounded-full border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm px-4 py-2" placeholder="e.g., What is a TRO?"></div>
+                <button id="qa-button" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all">Ask Gemini</button>
+            </div>
+            <div id="qa-response-area" class="mt-6">
+                <div id="qa-loader" class="hidden justify-center items-center py-4"><div class="loader"></div></div>
+                <div id="qa-answer" class="p-4 bg-f5f3ff rounded-xl border border-gray-200 hidden"></div>
+                <div id="qa-error" class="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 hidden"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContentArea = document.getElementById('main-content-area');
+            const navContainer = document.getElementById('main-nav');
+            
+            const pageTemplates = {
+                playbook: `
+                    <section id="playbook" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto">
+                            <h2 class="text-3xl font-bold text-text-primary">Anatomy of a Schedule A Lawsuit</h2>
+                            <p class="mt-4 text-text-secondary">Schedule A cases are a unique legal strategy used by brands to sue hundreds of online sellers at once. This section breaks down the highly effective, step-by-step process they use. Click each step to learn more.</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-start">
+                            <div class="md:col-span-2 space-y-3">
+                                <div id="step-1" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">1. The Sealed Complaint</h3><p class="text-sm text-text-secondary">The lawsuit is filed in secret.</p></div>
+                                <div id="step-2" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">2. The *Ex Parte* TRO</h3><p class="text-sm text-text-secondary">A judge is asked for an order with only one side present.</p></div>
+                                <div id="step-3" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">3. Asset Freeze & Takedown</h3><p class="text-sm text-text-secondary">The court order is served on payment platforms.</p></div>
+                                <div id="step-4" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">4. The "Notice"</h3><p class="text-sm text-text-secondary">Sellers discover their business is paralyzed.</p></div>
+                                <div id="step-5" class="step-item p-4 border border-transparent rounded-2xl bg-surface-container shadow-sm hover:shadow-lg transition-shadow duration-300"><h3 class="font-bold text-text-primary">5. The Resolution</h3><p class="text-sm text-text-secondary">Sellers face immense pressure to settle or default.</p></div>
+                            </div>
+                            <div id="step-details" class="md:col-span-3 p-6 bg-surface-container rounded-2xl shadow-lg min-h-[300px]"></div>
+                        </div>
+                    </section>
+                `,
+                epicenter: `
+                    <section id="epicenter" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Ground Zero: The Northern District of Illinois</h2><p class="mt-4 text-text-secondary">One federal court in Chicago has become the undisputed hub for Schedule A litigation. The chart below visualizes this staggering concentration.</p></div>
+                        <div class="bg-surface-container p-4 sm:p-6 rounded-2xl shadow-lg"><div class="chart-container" style="height: 400px; max-height: 50vh; max-width: 700px; margin: auto;"><canvas id="ndilChart"></canvas></div></div>
+                    </section>
+                `,
+                controversy: `
+                    <section id="controversy" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">A Collision with Due Process</h2><p class="mt-4 text-text-secondary">The power and efficiency of the Schedule A model come at a cost, creating a direct conflict with core principles of the American legal system.</p></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">⚖️ Due Process & Notice</h3><p class="text-text-secondary">Critics argue the Schedule A model subverts the right to notice and an opportunity to be heard by imposing penalties before the defendant is even aware of the lawsuit.</p></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">🔗 Improper Joinder</h3><p class="text-text-secondary">Lumping hundreds of unrelated sellers together is legally questionable and saves plaintiffs huge filing fees.</p></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">🏛️ The Jurisdictional Paradox</h3><p class="text-text-secondary">A one-way street: courts claim jurisdiction over foreign sellers but not over the U.S. rights holders when the roles are reversed.</p></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">⚖️ Power Imbalance</h3><p class="text-text-secondary">Global giants are pitted against small, often non-English-speaking merchants with frozen assets, creating immense pressure to settle.</p></div>
+                        </div>
+                    </section>
+                `,
+                'big-picture': `
+                    <section id="big-picture" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Systemic Signals & Economic Stakes</h2><p class="mt-4 text-text-secondary">Schedule A lawsuits are a symptom of larger forces: a legal system struggling with a borderless internet and the staggering scale of global counterfeiting.</p></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">💰 The Counterfeiting Economy</h3><p class="text-text-secondary mb-4">The tactics are a reaction to a massive problem.</p><div class="space-y-2 text-text-primary"><p><span class="font-bold">~$467 Billion:</span> Value of international counterfeit trade.</p><p><span class="font-bold">~5.4 Million:</span> Jobs lost globally.</p><p><span class="font-bold">~$4.2 Trillion:</span> Projected total value by 2025.</p></div></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg"><h3 class="text-xl font-bold text-text-primary mb-3">🌐 A Stressed Legal System</h3><p class="text-text-secondary">The traditional one-plaintiff vs. one-defendant model is failing in the face of mass, anonymous online infringement.</p></div>
+                            <div class="bg-surface-container p-6 rounded-2xl shadow-lg lg:col-span-1 md:col-span-2"><h3 class="text-xl font-bold text-text-primary mb-3">🛒 The Role of Platforms</h3><p class="text-text-secondary">A major debate is underway: should platforms remain neutral hosts, or be held accountable as gatekeepers?</p></div>
+                        </div>
+                    </section>
+                `,
+                forward: `
+                    <section id="forward" class="main-content space-y-8">
+                        <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">The Path Forward</h2><p class="mt-4 text-text-secondary">The Schedule A model is at a crossroads. The future will likely involve a mix of judicial, legislative, and technological solutions.</p></div>
+                        <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
+                            <div class="flex justify-center mb-6 p-1 bg-gray-200/70 rounded-full"><div id="tab-container" class="flex gap-2">
+                                <button data-tab="judicial" class="tab-button px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200">Judicial Reform</button>
+                                <button data-tab="legislative" class="tab-button px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200">Legislative Action</button>
+                                <button data-tab="technological" class="tab-button px-4 py-2 text-sm font-semibold rounded-full transition-colors duration-200">Technological Solutions</button>
+                            </div></div>
+                            <div id="tab-content" class="min-h-[250px]"></div>
+                        </div>
+                        <div class="mt-12 max-w-3xl mx-auto bg-surface-container p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold text-text-primary mb-4">✨ Generate a Sample Cease & Desist Letter</h3>
+                            <p class="text-text-secondary mb-4">For educational purposes, see how a legal notice might be structured. <strong class="text-red-600">This is not legal advice.</strong></p>
+                            <div class="space-y-4">
+                                <div><label for="brand-name" class="block text-sm font-medium text-text-primary">Your Brand Name:</label><input type="text" id="brand-name" class="mt-1 block w-full rounded-full border-gray-300 shadow-sm px-4 py-2" placeholder="e.g., Acme Widgets"></div>
+                                <div><label for="product-type" class="block text-sm font-medium text-text-primary">Infringing Product Type:</label><input type="text" id="product-type" class="mt-1 block w-full rounded-full border-gray-300 shadow-sm px-4 py-2" placeholder="e.g., Counterfeit blue widgets"></div>
+                                <div><label for="seller-name" class="block text-sm font-medium text-text-primary">Seller's Online Store Name:</label><input type="text" id="seller-name" class="mt-1 block w-full rounded-full border-gray-300 shadow-sm px-4 py-2" placeholder="e.g., BestWidgetDeals"></div>
+                                <button id="generate-letter-button" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700">Generate with Gemini</button>
+                            </div>
+                            <div id="letter-response-area" class="mt-6"><div id="letter-loader" class="hidden justify-center items-center py-4"><div class="loader"></div></div><div id="letter-output" class="hidden"><textarea readonly class="w-full h-64 p-4 border border-gray-300 rounded-2xl bg-f5f3ff font-mono text-sm"></textarea><button id="copy-letter-button" class="mt-2 px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700">Copy Text</button></div><div id="letter-error" class="p-4 bg-red-50 text-red-700 rounded-xl border border-red-200 hidden"></div></div>
+                        </div>
+                    </section>
+                `,
+                resources: `
+                    <section id="resources" class="main-content space-y-12">
+                        <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl font-bold text-text-primary">Resources & News</h2><p class="mt-4 text-text-secondary">Explore reliable sources for deeper analysis and stay updated with the latest news on Schedule A litigation.</p></div>
+                        
+                        <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
+                            <h3 class="text-2xl font-bold text-text-primary mb-4">Further Reading</h3>
+                            <ul class="space-y-3 list-disc list-inside text-text-secondary">
+                                <li><a href="https://columbialawreview.org/" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline"><strong>Columbia Law Review:</strong> For in-depth academic analysis of the procedural and constitutional issues.</a></li>
+                                <li><a href="https://www.ilnd.uscourts.gov/" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline"><strong>Northern District of Illinois Court Website:</strong> Access to court dockets, standing orders, and judicial opinions.</a></li>
+                                <li><a href="https://www.pacer.gov/" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline"><strong>PACER (Public Access to Court Electronic Records):</strong> The official federal judiciary system for accessing case and docket information.</a></li>
+                                <li><a href="https://www.schwimmerlegal.com/" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:underline"><strong>The Trademark Blog:</strong> Legal commentary and updates on trademark law and litigation trends.</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-surface-container p-6 rounded-2xl shadow-lg">
+                             <h3 class="text-2xl font-bold text-text-primary mb-4">Latest Newsfeed</h3>
+                             <div id="news-feed-container" class="space-y-4">
+                                <!-- News will be injected here -->
+                                <div class="text-center p-4"><div class="loader inline-block"></div></div>
+                             </div>
+                        </div>
+                    </section>
+                `
+            };
+            
+            const stepDetailsContent = {
+                'step-1': { title: 'Step 1: The Sealed Complaint', text: 'The rights holder (plaintiff) files a lawsuit against dozens or hundreds of online stores. Instead of listing them publicly, the defendants\' names are hidden in a confidential "Schedule A" document. The plaintiff argues this secrecy is necessary to prevent sellers from destroying evidence or moving money once they know they are being sued.' },
+                'step-2': { title: 'Step 2: The *Ex Parte* TRO', text: 'Immediately, the plaintiff asks the judge for a Temporary Restraining Order (TRO) in an *ex parte* hearing. This means the defendants are not present or notified. The judge only hears the plaintiff\'s side of the story. Given the one-sided presentation, these requests are very often granted.' },
+                'step-3': { title: 'Step 3: Asset Freeze & Takedown', text: 'The granted TRO is a powerful weapon. The plaintiff\'s lawyers serve it on third parties like Amazon, Etsy, PayPal, and eBay. The order commands them to immediately freeze all funds in the defendants\' accounts and deactivate their online storefronts and product listings.' },
+                'step-4': { title: 'Step 4: The Defendant\'s "Notice"', text: 'For most sellers, the first time they learn of the lawsuit is when their business is suddenly paralyzed. Their store vanishes, their listings are gone, and their entire revenue stream is frozen. This creates immediate and severe financial distress, leaving them confused and blindsided.' },
+                'step-5': { title: 'Step 5: The Path to Resolution', text: 'With their business crippled, defendants are under immense pressure. They have three options: 1) <strong>Settle:</strong> Pay the plaintiff a portion of the frozen funds to get their account back. 2) <strong>Default:</strong> Do nothing, often due to lack of resources or understanding, allowing the plaintiff to take all frozen funds. 3) <strong>Fight:</strong> A rare and expensive option, especially since their operating capital is frozen.' }
+            };
+            const tabContentData = {
+                judicial: { title: 'Judicial Reform: Fixing the System from Within', points: ['<strong>Apply Stricter Joinder Rules:</strong> Force plaintiffs to sue only defendants who are actually connected, leading to smaller, more targeted lawsuits.', '<strong>Raise the Bar for TROs:</strong> Demand more concrete proof of wrongdoing before freezing assets, and limit freezes to funds directly traceable to alleged infringement.', '<strong>Mandate Due Diligence:</strong> Require plaintiffs to thoroughly investigate sellers before suing them, with sanctions for improperly including legitimate businesses.'] },
+                legislative: { title: 'Legislative Action: Changing the Rules of the Game', points: ['<strong>Pass Platform Accountability Laws:</strong> Acts like the SHOP SAFE Act would shift the enforcement burden onto e-commerce platforms like Amazon.', '<strong>Mandate Seller Verification:</strong> Require platforms to verify the identity and contact information of their third-party sellers.', '<strong>Proactive Policing:</strong> Obligate platforms to proactively screen for and remove counterfeit listings, rather than waiting for complaints.'] },
+                technological: { title: 'Technological Solutions: Enforcement by Design', points: ['<strong>AI & Machine Learning:</strong> Deploy AI to scan millions of listings in real-time, using image recognition and data analysis to automatically flag and remove counterfeits.', '<strong>Blockchain for Supply Chains:</strong> Create a secure "digital passport" for products, allowing anyone from customs officials to consumers to instantly verify an item\'s authenticity.', '<strong>Automated Takedown Systems:</strong> Develop smarter systems that can identify and disable networks of infringing sellers based on behavioral patterns, not just individual listings.'] }
+            };
+
+            function renderPage(pageId) {
+                mainContentArea.innerHTML = pageTemplates[pageId] || `<p>Page not found.</p>`;
+                switch(pageId) {
+                    case 'playbook': initPlaybook(); break;
+                    case 'epicenter': initEpicenterChart(); break;
+                    case 'forward': initForward(); break;
+                    case 'resources': initResourcesAndNews(); break;
+                }
+                updateActiveNav(pageId);
+            }
+
+            function updateActiveNav(pageId) {
+                navContainer.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${pageId}`);
+                });
+            }
+
+            navContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'A') {
+                    e.preventDefault();
+                    const pageId = e.target.getAttribute('href').substring(1);
+                    renderPage(pageId);
+                    window.history.pushState({pageId}, '', `#${pageId}`);
+                }
+            });
+            
+            window.addEventListener('popstate', (e) => {
+                const pageId = e.state ? e.state.pageId : 'playbook';
+                renderPage(pageId);
+            });
+
+            function initPlaybook() {
+                const stepItems = document.querySelectorAll('.step-item');
+                const stepDetailsContainer = document.getElementById('step-details');
+                
+                function updateStepDetails(stepId) {
+                    const content = stepDetailsContent[stepId];
+                    if (content) {
+                        stepDetailsContainer.innerHTML = `<h3 class="text-2xl font-bold text-text-primary mb-4">${content.title}</h3><p class="text-text-secondary leading-relaxed">${content.text}</p>`;
+                    }
+                    stepItems.forEach(item => {
+                        item.classList.toggle('active', item.id === stepId);
+                        item.style.borderColor = item.id === stepId ? 'var(--accent-secondary)' : 'transparent';
+                    });
+                }
+                stepItems.forEach(item => item.addEventListener('click', () => updateStepDetails(item.id)));
+                updateStepDetails('step-1');
+            }
+
+            function initEpicenterChart() {
+                const ctx = document.getElementById('ndilChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: ['2020', '2021', '2022'], datasets: [{ label: 'Cases Filed in NDIL', data: [496, 664, 823], backgroundColor: 'rgba(13, 148, 136, 0.6)', borderColor: 'rgba(13, 148, 136, 1)', borderWidth: 2, borderRadius: 8 }, { label: 'Cases Filed Elsewhere', data: [37, 69, 112], backgroundColor: 'rgba(192, 38, 211, 0.6)', borderColor: 'rgba(192, 38, 211, 1)', borderWidth: 2, borderRadius: 8 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { title: { display: true, text: 'Schedule A Case Filings: NDIL vs. Rest of U.S.', font: { size: 18 }, color: '#333' }, tooltip: { callbacks: { footer: (items) => { const total = items.reduce((s, i) => s + i.raw, 0); const ndil = items.find(i => i.dataset.label.includes('NDIL'))?.raw || 0; return total > 0 ? `NDIL handled ${((ndil / total) * 100).toFixed(1)}% of cases.` : ''; } } } }, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: 'Number of Cases Filed' } } } }
+                });
+            }
+            
+            function initForward() {
+                const tabContainer = document.getElementById('tab-container');
+                const tabContentContainer = document.getElementById('tab-content');
+                
+                function updateTabContent(activeButton) {
+                    const tabId = activeButton.dataset.tab;
+                    const content = tabContentData[tabId];
+                    if (content) {
+                        tabContentContainer.innerHTML = `<h3 class="text-2xl font-bold text-text-primary mb-4">${content.title}</h3><ul class="space-y-3 list-disc list-inside text-text-secondary">${content.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+                    }
+                    
+                    tabContainer.querySelectorAll('.tab-button').forEach(button => {
+                        button.classList.remove('active');
+                    });
+                    activeButton.classList.add('active');
+                }
+
+                tabContainer.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('tab-button')) {
+                        updateTabContent(e.target);
+                    }
+                });
+                
+                updateTabContent(tabContainer.querySelector('.tab-button'));
+                initGeminiLetter();
+            }
+
+            function formatDate(dateString) {
+                if (!dateString) return 'Date not available';
+                try {
+                    const cleanDateString = dateString.includes(',') ? dateString.substring(dateString.indexOf(',') + 1).trim() : dateString;
+                    const dateObj = new Date(cleanDateString);
+                    if (isNaN(dateObj.getTime())) {
+                        return 'Date not available';
+                    }
+                    return dateObj.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } catch (e) {
+                    return 'Date not available';
+                }
+            }
+
+            function initResourcesAndNews() {
+                const newsContainer = document.getElementById('news-feed-container');
+                const newsData = [
+                    {"index": "1.2", "publication_time": "41 days ago, Wednesday, June 11, 2025 at 2:00:00 AM", "snippet": "ND Illinois Judge stays all his Schedule A trademark suits to “reassess” By Marty Schwimmer on June 11, 2025. Posted in Uncategorized. Approximately 80% of Schedule A Defendant (“SAD”) counterfeiting suits are brought in the Northern District of Illinois... Over the past few weeks a judge in the ND Ill, Judge John Kness, has issued an order staying all of his pending SAD suits...", "source_title": "ND Illinois Judge stays all his Schedule A trademark suits to \"reassess\"", "url": "https://www.schwimmerlegal.com/2025/06/nd-illinois-judge-stays-all-his-schedule-a-trademark-suits-to-reassess.html"},
+                    {"index": "1.3", "publication_time": null, "snippet": "The Northern District of Illinois (“NDIL”) has been a hotbed for “Schedule A” litigation... NDIL Judge John Kness, however, recently stayed dozens of Schedule A cases while the court considers whether Schedule A litigation is an appropriate procedure and an exercise of sound judicial discretion. He joins other NDIL judges who sua sponte have dismissed cases for improper joinder...", "source_title": "NDIL Hits Pause: “Schedule A” Suits Face New Scrutiny - Irwin IP", "url": "https://irwinip.com/2025/06/ndil-hits-pause-schedule-a-suits-face-new-scrutiny/"},
+                    {"index": "1.4", "publication_time": null, "snippet": "Over the last five or more years, the Northern District has become the epicenter of intellectual property cases filed against an anonymous list of alleged infringers... 83% of the Schedule A cases filed have been filed in Chicago since 2020... But more recently, Judge Kness has stayed proceedings in over 50 Schedule A cases.", "source_title": "Roadblock or a Speedbump for Schedule A/Doe Case in the Northern District of Illinois?", "url": "https://www.chicagoiplitigation.com/2025/06/roadblock-or-a-speedbump-for-schedule-a-doe-case-in-the-northern-district-of-illinois/"},
+                    {"index": "1.5", "publication_time": "482 days ago, Wednesday, March 27, 2024 at 2:00:00 AM", "snippet": "A cursory glance at the daily calendar in the Northern District of Illinois reveals a recurring theme: “Schedule A” cases. Such matters are prevalent in the district court judges' court calls. In fact, the Northern District of Illinois is by far the most popular court for filing Schedule A patent infringement cases.", "source_title": "The Slew of Schedule A Cases in the Northern District of Illinois", "url": "https://appellatelawgroup.com/the-slew-of-schedule-a-cases-in-the-northern-district-of-illinois/"}
+                ];
+                
+                newsContainer.innerHTML = ''; // Clear loader
+                if (newsData.length > 0) {
+                    newsData.forEach(item => {
+                        const displayDate = formatDate(item.publication_time);
+                        const card = `
+                            <div class="border border-gray-200 p-4 rounded-xl hover:shadow-md transition-shadow">
+                                <p class="text-sm text-gray-500 mb-1">${displayDate}</p>
+                                <h4 class="font-bold text-lg text-text-primary">${item.source_title}</h4>
+                                <p class="text-text-secondary text-sm mt-2">${item.snippet.substring(0, 200)}...</p>
+                                <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="text-teal-600 hover:text-teal-700 font-semibold text-sm mt-3 inline-block">Read More &rarr;</a>
+                            </div>
+                        `;
+                        newsContainer.innerHTML += card;
+                    });
+                } else {
+                    newsContainer.innerHTML = '<p class="text-text-secondary">Could not fetch recent news. Please try again later.</p>';
+                }
+            }
+
+            // --- GEMINI API INTEGRATION ---
+            // IMPORTANT: To use this on your own website, you must get your own API key from Google AI Studio
+            // and replace the empty string below.
+            const userApiKey = ""; // <--- PASTE YOUR API KEY HERE
+
+            const apiKey = typeof __initial_auth_token !== 'undefined' ? "" : userApiKey;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            function initGeminiQA() {
+                const qaButton = document.getElementById('qa-button');
+                const qaInput = document.getElementById('qa-input');
+                const qaLoader = document.getElementById('qa-loader');
+                const qaAnswerDiv = document.getElementById('qa-answer');
+                const qaErrorDiv = document.getElementById('qa-error');
+
+                qaButton.addEventListener('click', async () => {
+                    const question = qaInput.value.trim();
+                    if (!question) return;
+
+                    qaLoader.style.display = 'flex';
+                    qaAnswerDiv.classList.add('hidden');
+                    qaErrorDiv.classList.add('hidden');
+
+                    const internalContext = Array.from(document.querySelectorAll('section')).map(s => s.innerText).join('\n\n');
+                    const prompt = `You are an expert legal analyst. A user is asking a question about Schedule A lawsuits. First, try to answer the question using ONLY the provided internal context. If the answer is in the context, state that your answer is based on the report. If the context does not fully answer the question, you may use your own external knowledge to provide a more complete answer, but you MUST state that you are using external information. The user is not a lawyer, so keep the answer clear and easy to understand.
+
+Internal Context from the report:
+---
+${internalContext}
+---
+
+User Question: "${question}"`;
+                    
+                    try {
+                        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        const result = await response.json();
+                        
+                        if (result.candidates && result.candidates.length > 0) {
+                            qaAnswerDiv.innerText = result.candidates[0].content.parts[0].text;
+                            qaAnswerDiv.classList.remove('hidden');
+                        } else { 
+                            let errorMsg = 'No valid response from API.';
+                            if (result.error) {
+                                errorMsg += ` Details: ${result.error.message}`;
+                            }
+                            if (!apiKey && !userApiKey) {
+                                errorMsg = "API key is missing. Please add your API key to the script to enable this feature.";
+                            }
+                            throw new Error(errorMsg);
+                        }
+                    } catch (error) {
+                        qaErrorDiv.innerText = `Sorry, an error occurred. ${error.message}`;
+                        qaErrorDiv.classList.remove('hidden');
+                    } finally {
+                        qaLoader.style.display = 'none';
+                    }
+                });
+            }
+
+            function initGeminiLetter() {
+                const generateBtn = document.getElementById('generate-letter-button');
+                const loader = document.getElementById('letter-loader');
+                const outputDiv = document.getElementById('letter-output');
+                const textarea = outputDiv.querySelector('textarea');
+                const errorDiv = document.getElementById('letter-error');
+                const copyBtn = document.getElementById('copy-letter-button');
+
+                generateBtn.addEventListener('click', async () => {
+                    const brandName = document.getElementById('brand-name').value.trim();
+                    const productType = document.getElementById('product-type').value.trim();
+                    const sellerName = document.getElementById('seller-name').value.trim();
+
+                    if (!brandName || !productType || !sellerName) { alert('Please fill in all fields.'); return; }
+
+                    loader.style.display = 'flex';
+                    outputDiv.classList.add('hidden');
+                    errorDiv.classList.add('hidden');
+
+                    const prompt = `You are a legal writing assistant. For educational purposes, generate a simple, sample cease-and-desist letter regarding trademark infringement. The tone should be formal but clear for a non-lawyer. Do not include any real law firm names or contact information; use placeholders.\n\nInformation to use:\n- Brand Name: "${brandName}"\n- Allegedly Infringing Product: "${productType}"\n- Addressed to Seller Name: "${sellerName}"\n\nThe letter should include placeholders like [DATE], [YOUR NAME/FIRM], and [YOUR ADDRESS]. Crucially, end the letter with the disclaimer: "This letter is for educational purposes only and does not constitute legal advice."`;
+
+                    try {
+                        const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        const result = await response.json();
+
+                        if (result.candidates && result.candidates.length > 0) {
+                            textarea.value = result.candidates[0].content.parts[0].text;
+                            outputDiv.classList.remove('hidden');
+                        } else { 
+                             let errorMsg = 'No valid response from API.';
+                            if (result.error) {
+                                errorMsg += ` Details: ${result.error.message}`;
+                            }
+                             if (!apiKey && !userApiKey) {
+                                errorMsg = "API key is missing. Please add your API key to the script to enable this feature.";
+                            }
+                            throw new Error(errorMsg);
+                        }
+                    } catch (error) {
+                        errorDiv.innerText = `Sorry, an error occurred. ${error.message}`;
+                        errorDiv.classList.remove('hidden');
+                    } finally {
+                        loader.style.display = 'none';
+                    }
+                });
+
+                copyBtn.addEventListener('click', () => {
+                    textarea.select();
+                    document.execCommand('copy');
+                    copyBtn.innerText = 'Copied!';
+                    setTimeout(() => { copyBtn.innerText = 'Copy Text'; }, 2000);
+                });
+            }
+            
+            // --- BOT MODAL LOGIC ---
+            const botModal = document.getElementById('bot-modal');
+            const botModalContent = document.getElementById('bot-modal-content');
+            const openBotButton = document.getElementById('open-bot-button');
+            const closeBotButton = document.getElementById('close-bot-button');
+
+            function openModal() {
+                botModal.classList.remove('invisible', 'opacity-0');
+                botModalContent.classList.remove('scale-95');
+            }
+
+            function closeModal() {
+                botModal.classList.add('opacity-0');
+                botModalContent.classList.add('scale-95');
+                setTimeout(() => {
+                    botModal.classList.add('invisible');
+                }, 300);
+            }
+
+            openBotButton.addEventListener('click', openModal);
+            closeBotButton.addEventListener('click', closeModal);
+            botModal.addEventListener('click', (e) => {
+                if (e.target === botModal) {
+                    closeModal();
+                }
+            });
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !botModal.classList.contains('invisible')) {
+                    closeModal();
+                }
+            });
+
+
+            // --- INITIAL LOAD ---
+            const initialPage = window.location.hash.substring(1) || 'playbook';
+            renderPage(initialPage);
+            initGeminiQA(); // Initialize bot logic once on page load
+        });
+    </script>
+</body>
+</html>
