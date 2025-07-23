@@ -86,9 +86,34 @@
                 padding-left: var(--sidebar-width);
             }
         }
+
+        .legal-term {
+            color: var(--accent-secondary);
+            cursor: pointer;
+            position: relative;
+            font-weight: 600;
+            text-decoration: underline dotted;
+        }
+
+        #legal-tooltip {
+            position: absolute;
+            display: none;
+            width: 300px;
+            background-color: var(--surface-container);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <div id="legal-tooltip"></div>
 
     <div class="relative min-h-screen lg:flex">
         <!-- Sidebar -->
@@ -185,6 +210,15 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const legalGlossary = {
+                'ex parte': 'A legal proceeding brought by one person in the absence of and without representation or notification of other parties.',
+                'joinder': 'The joining of two or more legal issues together. In the context of Schedule A cases, it refers to suing multiple defendants in a single lawsuit.',
+                'Temporary Restraining Order (TRO)': 'A short-term, pre-trial temporary injunction granted by a court on an ex parte basis.',
+                'due process': 'A fundamental principle of fairness in all legal matters, both civil and criminal, especially in the courts.',
+                'jurisdiction': 'The official power to make legal decisions and judgments.',
+                'Schedule A': 'A confidential list of defendants in a lawsuit, used in mass IP litigation to sue many online sellers at once without publicly naming them initially.'
+            };
+
             const mainContentArea = document.getElementById('main-content-area');
             const navContainer = document.getElementById('main-nav');
             const sidebar = document.getElementById('sidebar');
@@ -419,6 +453,7 @@
                     case 'caselaw': initCaseLawDatabase(); break;
                 }
                 updateActiveNav(pageId);
+                highlightLegalTerms();
             }
 
             function updateActiveNav(pageId) {
@@ -451,6 +486,74 @@
                 sidebar.classList.toggle('-translate-x-full');
                  sidebar.classList.toggle('translate-x-0');
             });
+
+            function highlightLegalTerms() {
+                const contentArea = document.getElementById('main-content-area');
+                if (!contentArea) return;
+
+                const tooltip = document.getElementById('legal-tooltip');
+                const allTextNodes = [];
+
+                function getTextNodes(node) {
+                    if (node.nodeType === 3) {
+                        allTextNodes.push(node);
+                    } else {
+                        for (let i = 0; i < node.childNodes.length; i++) {
+                            getTextNodes(node.childNodes[i]);
+                        }
+                    }
+                }
+
+                getTextNodes(contentArea);
+
+                const termKeys = Object.keys(legalGlossary).sort((a, b) => b.length - a.length);
+
+                allTextNodes.forEach(textNode => {
+                    if (textNode.parentElement.tagName === 'SCRIPT' || textNode.parentElement.tagName === 'STYLE') {
+                        return;
+                    }
+                    let originalText = textNode.nodeValue;
+                    let newHtml = originalText;
+
+                    termKeys.forEach(term => {
+                        const regex = new RegExp(`\\b(${term})\\b`, 'gi');
+                        newHtml = newHtml.replace(regex, `<span class="legal-term" data-term="${term}">$1</span>`);
+                    });
+
+                    if (newHtml !== originalText) {
+                        const newFragment = document.createRange().createContextualFragment(newHtml);
+                        textNode.parentElement.replaceChild(newFragment, textNode);
+                    }
+                });
+
+                contentArea.addEventListener('mouseover', function(e) {
+                    if (e.target.classList.contains('legal-term')) {
+                        const term = e.target.dataset.term;
+                        tooltip.innerHTML = `<strong>${term}</strong>: ${legalGlossary[term]}`;
+                        tooltip.style.display = 'block';
+
+                        const rect = e.target.getBoundingClientRect();
+                        let top = rect.bottom + window.scrollY + 5;
+                        let left = rect.left + window.scrollX;
+
+                        if (top + tooltip.offsetHeight > window.innerHeight + window.scrollY) {
+                            top = rect.top + window.scrollY - tooltip.offsetHeight - 5;
+                        }
+                        if (left + tooltip.offsetWidth > window.innerWidth + window.scrollX) {
+                            left = window.innerWidth + window.scrollX - tooltip.offsetWidth - 10;
+                        }
+
+                        tooltip.style.top = `${top}px`;
+                        tooltip.style.left = `${left}px`;
+                    }
+                });
+
+                contentArea.addEventListener('mouseout', function(e) {
+                    if (e.target.classList.contains('legal-term')) {
+                        tooltip.style.display = 'none';
+                    }
+                });
+            }
 
             function initCaseLawDatabase() {
                 const caseData = [
